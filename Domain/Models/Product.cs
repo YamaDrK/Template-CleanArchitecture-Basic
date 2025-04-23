@@ -1,0 +1,23 @@
+﻿using Domain.EntityAbstractions;
+using Domain.ModelAnnotations;
+
+namespace Domain.Models
+{
+    public class Product : AuditableEntity
+    {
+        [MessageRequired]
+        [MessageMaxLength(255)]
+        public string? Name { get; set; }
+
+        [MessageRequired]
+        [MessageMaxLength(1000)]
+        public string? Description { get; set; }
+
+        [NumberPositive]
+        public double? Price { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public virtual Category? Category { get; set; }
+    }
+}
