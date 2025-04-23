@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces.Base;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Abstractions.Controllers
+namespace WebAPI.Controllers.Abstractions
 {
     public abstract class CrudController<TModel, TCreateDTO, TUpdateDTO, TGetDTO>
         (ICrudService<TModel, TCreateDTO, TUpdateDTO, TGetDTO> crudService) 

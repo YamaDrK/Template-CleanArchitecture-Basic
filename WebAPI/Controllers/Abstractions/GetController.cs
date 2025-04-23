@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces.Base;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Abstractions.Controllers
+namespace WebAPI.Controllers.Abstractions
 {
     public abstract class GetController<TModel, TGetDTO>(IGetService<TModel, TGetDTO> getService) : BaseController
     {
