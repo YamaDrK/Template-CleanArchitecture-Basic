@@ -1,9 +1,9 @@
-﻿using Application.Common.Mappers;
+﻿using Application.Commons.Mappers;
 using Domain.Models;
 
 namespace Application.DTOs.Users
 {
-    public class LoginUserDTO : IMapTo<User>
+    public class LoginUserDTO : MapTo<User>
     {
         public string? Email { get; set; }
         public string? Password { get; set; }
