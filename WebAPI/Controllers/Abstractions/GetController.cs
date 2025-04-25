@@ -1,20 +1,13 @@
-﻿using Application.Interfaces.Base;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.Abstractions
 {
-    public abstract class GetController<TModel, TGetDTO>(IGetService<TModel, TGetDTO> getService) : BaseController
+    public abstract class GetController : BaseController
     {
         [HttpGet]
-        public virtual async Task<IActionResult> GetAllAsync()
-        {
-            return Ok(await getService.GetAllAsync());
-        }
+        public abstract Task<IActionResult> GetAll();
 
         [HttpGet("{id}")]
-        public virtual async Task<IActionResult> GetByIdAsync([FromRoute] int id)
-        {
-            return Ok(await getService.GetByIdAsync(id));
-        }
+        public abstract Task<IActionResult> GetById([FromRoute] int id);
     }
 }

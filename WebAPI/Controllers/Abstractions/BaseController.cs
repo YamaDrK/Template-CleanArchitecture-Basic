@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.Abstractions
 {
-    [Route("api/v1/[controller]")]
+    [ApiVersion(1)]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseController : ControllerBase;
 }

@@ -1,29 +1,16 @@
-﻿using Application.Interfaces.Base;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.Abstractions
 {
-    public abstract class CrudController<TModel, TCreateDTO, TUpdateDTO, TGetDTO>
-        (ICrudService<TModel, TCreateDTO, TUpdateDTO, TGetDTO> crudService) 
-            : GetController<TModel, TGetDTO>(crudService)
+    public abstract class CrudController<TCreateDTO, TUpdateDTO> : GetController
     {
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync([FromBody] TCreateDTO createDTO)
-        {
-            return Ok(await crudService.CreateAsync(createDTO));
-        }
+        public abstract Task<IActionResult> Create([FromBody] TCreateDTO createDTO);
 
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TUpdateDTO updateDTO)
-        {
-            return Ok(await crudService.UpdateAsync(updateDTO));
-        }
+        public abstract Task<IActionResult> Update([FromRoute] int id, [FromBody] TUpdateDTO updateDTO);
 
         [HttpDelete("{id}")]
-        public virtual async Task<IActionResult> DeleteAsync([FromRoute] int id)
-        {
-            await crudService.DeleteAsync(id);
-            return NoContent();
-        }
+        public abstract Task<IActionResult> Delete([FromRoute] int id);
     }
 }
