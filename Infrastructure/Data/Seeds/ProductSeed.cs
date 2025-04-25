@@ -15,7 +15,7 @@ namespace Infrastructure.Data.Seeds
                     Description = "Tender grilled chicken breast with herbs.",
                     Price = 8.99,
                     CategoryId = 1,
-                    CreationDate = DateTime.UtcNow
+                    CreationDate = new DateTime(2025, 04, 22)
                 },
                 new Product
                 {
@@ -24,7 +24,7 @@ namespace Infrastructure.Data.Seeds
                     Description = "Freshly squeezed orange juice.",
                     Price = 3.50,
                     CategoryId = 2,
-                    CreationDate = DateTime.UtcNow
+                    CreationDate = new DateTime(2025, 04, 22)
                 },
                 new Product
                 {
@@ -33,7 +33,7 @@ namespace Infrastructure.Data.Seeds
                     Description = "Crispy salted potato chips.",
                     Price = 1.75,
                     CategoryId = 3,
-                    CreationDate = DateTime.UtcNow
+                    CreationDate = new DateTime(2025, 04, 22)
                 },
                 new Product
                 {
@@ -42,7 +42,7 @@ namespace Infrastructure.Data.Seeds
                     Description = "Rich and moist chocolate layer cake.",
                     Price = 4.25,
                     CategoryId = 4,
-                    CreationDate = DateTime.UtcNow
+                    CreationDate = new DateTime(2025, 04, 22)
                 }
             ];
             return entity.HasData(productSeed);
