@@ -1,12 +1,10 @@
-﻿using Application.Abstractions.Repositories;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Application.Commons;
 using Domain.Enums;
 using Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Application.Utils
 {
