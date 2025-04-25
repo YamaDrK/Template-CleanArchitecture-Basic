@@ -3,8 +3,13 @@
 namespace Domain.ModelAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class MessageRequiredAttribute() : ValidationAttribute($"{0} is required")
+    public class MessageRequiredAttribute : RequiredAttribute
     {
+        public MessageRequiredAttribute() : base()
+        {
+            ErrorMessage = $"{0} is required";
+        }
+
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null || (value is string str && string.IsNullOrWhiteSpace(str)))
