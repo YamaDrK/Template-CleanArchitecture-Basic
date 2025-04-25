@@ -16,6 +16,7 @@ namespace Domain.Models
         [NumberPositive]
         public double? Price { get; set; }
 
+        [MessageRequired]
         public int CategoryId { get; set; }
 
         public virtual Category? Category { get; set; }

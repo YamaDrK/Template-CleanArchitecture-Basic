@@ -2,7 +2,7 @@
 
 namespace Domain.EntityAbstractions
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : Entity
     {
         [Key]        
         public int Id { get; set; }

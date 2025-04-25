@@ -10,7 +10,12 @@
 
         public bool IsDeleted { get; set; } = false;
 
-        public void SetAuditableProperties() => CreationDate = DateTime.Now;
+        public void SetAuditableProperties()
+        {
+            CreationDate = DateTime.Now;
+            ModificationDate = null;
+            DeletionDate = null;
+        }
 
         public void UpdateAuditableProperties() => ModificationDate = DateTime.Now;
 
