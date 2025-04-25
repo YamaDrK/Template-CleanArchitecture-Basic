@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Domain.EntityAbstractions;
 
-namespace Application.Common.Mappers
+namespace Application.Commons.Mappers
 {
-    public interface IMapFrom<T>
+    public interface IMapFrom<T> where T : Entity
     {
-        void Mapping(Profile profile) => profile.CreateMap(typeof(T), GetType());
+        void Mapping(Profile profile);
     }
 }

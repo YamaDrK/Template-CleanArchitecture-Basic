@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using AutoMapper;
 
-namespace Application.Common.Mappers
+namespace Application.Commons.Mappers
 {
-    public class MapperConfiguration : Profile
+    public class MapperConfigProfile : Profile
     {
-        public MapperConfiguration()
+        public MapperConfigProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
@@ -13,8 +13,11 @@ namespace Application.Common.Mappers
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i =>
-                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+                .Where(t => t.GetInterfaces().Any(i => i.IsGenericType
+                    && (i.GetGenericTypeDefinition() == typeof(IMapFrom<>)
+                    || i.GetGenericTypeDefinition() == typeof(IMapTo<>))
+                ))
+                .Where(t => t.Name != typeof(MapFrom<>).Name && t.Name != typeof(MapTo<>).Name)
                 .ToList();
 
             foreach (var type in types)
