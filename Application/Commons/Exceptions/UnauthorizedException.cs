@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Exceptions
+﻿namespace Application.Commons.Exceptions
 {
     public class UnauthorizedException : Exception;
 }

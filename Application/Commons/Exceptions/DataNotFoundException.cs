@@ -1,5 +1,10 @@
-﻿namespace Application.Common.Exceptions
+﻿namespace Application.Commons.Exceptions
 {
-    public class DataNotFoundException(string entityName, int id) 
-        : Exception($"Entity {entityName} ({id}) was not found!");
+    public class DataNotFoundException : Exception
+    {
+        public DataNotFoundException(Type entityType, int id) 
+            : base($"Entity {entityType.Name} ({id}) was not found!") { }
+
+        public DataNotFoundException(string? message) : base(message) { }
+    }
 }
