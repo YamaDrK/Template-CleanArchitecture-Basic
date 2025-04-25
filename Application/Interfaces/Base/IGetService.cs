@@ -1,9 +1,11 @@
-﻿namespace Application.Interfaces.Base
+﻿using Domain.EntityAbstractions;
+
+namespace Application.Interfaces.Base
 {
     public interface IGetService<TModel, TGetDTO>
+        where TModel : BaseEntity
+        where TGetDTO : class
     {
-        string[]? Includes { get; set; }
-
         Task<List<TGetDTO>> GetAllAsync();
         Task<List<TGetDTO>> GetAllWithDeletedAsync();
 
