@@ -1,5 +1,5 @@
 ﻿using Domain.EntityAbstractions;
-using Domain.ModelAnnotations;
+using Domain.EntityAnnotations;
 
 namespace Domain.Models
 {

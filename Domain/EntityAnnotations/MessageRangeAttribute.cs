@@ -1,21 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.ModelAnnotations
+namespace Domain.EntityAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class MessageMaxLengthAttribute : MaxLengthAttribute
+    public class MessageRangeAttribute : RangeAttribute
     {
-        private readonly int _maxLength;
+        private readonly double _minimum;
+        private readonly double _maximum;
 
-        public MessageMaxLengthAttribute(int maxLength) : base(maxLength)
+        public MessageRangeAttribute(double minimum, double maximum) : base(minimum, maximum)
         {
-            _maxLength = maxLength;
-            ErrorMessage = "{0} can't exceed {1} characters";
+            _minimum = minimum;
+            _maximum = maximum;
+            ErrorMessage = "{0} must be between {1} and {2}";
         }
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value is string str && str.Length > _maxLength)
+            if (value is double number && (number < _minimum || number > _maximum))
             {
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }
@@ -25,7 +27,7 @@ namespace Domain.ModelAnnotations
 
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, _maxLength);
+            return string.Format(ErrorMessageString, name, _minimum, _maximum);
         }
     }
 }

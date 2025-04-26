@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.EntityAbstractions;
 using Domain.Enums;
-using Domain.ModelAnnotations;
+using Domain.EntityAnnotations;
 
 namespace Domain.Models
 {

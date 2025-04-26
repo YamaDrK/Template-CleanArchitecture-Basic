@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.ModelAnnotations
+namespace Domain.EntityAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class NumberPositiveAttribute() : ValidationAttribute("{0} can't be negative")
