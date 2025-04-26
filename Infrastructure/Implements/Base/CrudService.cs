@@ -19,7 +19,7 @@ namespace Infrastructure.Implements.Base
                     where TUpdateDTO : MapTo<TModel>
                     where TGetDTO : class
     {
-        public async Task<TGetDTO> CreateAsync(TCreateDTO createDTO)
+        public virtual async Task<TGetDTO> CreateAsync(TCreateDTO createDTO)
         {
             var entity = _mapper.Map<TModel>(createDTO);
             entity.TryValidate();
@@ -30,7 +30,7 @@ namespace Infrastructure.Implements.Base
             return _mapper.Map<TGetDTO>(resultEntity);
         }
 
-        public async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(int id)
         {
             var entity = await _unitOfWork.Repository<TModel>().GetByIdAsync(id)
                 ?? throw new DataNotFoundException(typeof(TModel), id);
@@ -39,7 +39,7 @@ namespace Infrastructure.Implements.Base
             await _unitOfWork.SaveChangeAsync();
         }
 
-        public async Task<TGetDTO> UpdateAsync(int id, TUpdateDTO updateDTO)
+        public virtual async Task<TGetDTO> UpdateAsync(int id, TUpdateDTO updateDTO)
         {
             var entity = await _unitOfWork.Repository<TModel>().GetByIdAsync(id)
                 ?? throw new DataNotFoundException(typeof(TModel), id);
