@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Base;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Domain.EntityAbstractions;
 using Infrastructure.Data;
@@ -8,12 +9,15 @@ namespace Infrastructure.Implements.Base
 {
     public class UnitOfWork(ApplicationDbContext dbContext,
         IDistributedCache cache,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IUserRepository userRepository)
             : IUnitOfWork
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
         private readonly IDistributedCache _cache = cache;
         private readonly Dictionary<Type, dynamic> _repositories = [];
+
+        public IUserRepository UserRepository => userRepository;
 
         public IGenericRepository<T> Repository<T>(bool isCached = false) where T : Entity
         {

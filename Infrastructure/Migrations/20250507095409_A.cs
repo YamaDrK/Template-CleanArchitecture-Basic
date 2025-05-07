@@ -53,7 +53,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModificationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -107,10 +107,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "CreationDate", "DeletionDate", "Email", "IsDeleted", "ModificationDate", "Password", "Role" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2004, 10, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin@Admin.com", false, null, "123", 2 },
-                    { 2, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User1@User.com", false, null, "123", 1 },
-                    { 3, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User2@User.com", false, null, "123", 1 },
-                    { 4, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User3@User.com", false, null, "123", 1 }
+                    { 1, new DateTime(2004, 10, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin@Admin.com", false, null, "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy", 2 },
+                    { 2, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User1@User.com", false, null, "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy", 1 },
+                    { 3, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User2@User.com", false, null, "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy", 1 },
+                    { 4, new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User3@User.com", false, null, "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy", 1 }
                 });
 
             migrationBuilder.InsertData(

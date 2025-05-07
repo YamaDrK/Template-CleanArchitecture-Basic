@@ -12,10 +12,9 @@ namespace Domain.Models
         [EmailAddress(ErrorMessage = "Email must be in correct form")]
         public string Email { get; set; } = string.Empty;
 
-        [MessageMaxLength(20)]
         [MessageRequired]
         public string Password { get; set; } = string.Empty;
 
-        public RoleEnum Role { get; set; }
+        public RoleEnum Role { get; set; } = RoleEnum.User;
     }
 }

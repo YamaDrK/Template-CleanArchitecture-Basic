@@ -3,6 +3,8 @@ using Domain.Enums;
 using Domain.Models;
 using Infrastructure.Data.Seeds;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Infrastructure.Data
 {
@@ -38,6 +40,7 @@ namespace Infrastructure.Data
         {
             ChangeTracker.DetectChanges();
             var auditEntries = new List<AuditEntry>();
+
             foreach (var entry in ChangeTracker.Entries())
             {
                 if (entry.Entity is Audit || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
@@ -48,19 +51,30 @@ namespace Infrastructure.Data
                     TableName = entry.Entity.GetType().Name,
                     UserId = userId ?? "Unknown"
                 };
-
                 auditEntries.Add(auditEntry);
+
+                var isDeletedProperty = entry.Properties.FirstOrDefault(prop => prop.Metadata.Name == nameof(AuditableEntity.IsDeleted));
+                if (!Equals(isDeletedProperty?.OriginalValue, isDeletedProperty?.CurrentValue))
+                {
+                    auditEntry.AuditType = AuditTypeEnum.Delete;
+
+                    auditEntry.KeyValues = entry.Properties
+                        .Where(prop => prop.Metadata.IsPrimaryKey())
+                        .ToDictionary(prop => prop.Metadata.Name, prop => prop.CurrentValue);
+
+                    auditEntry.OldValues = entry.Properties
+                        .Where(p => !IsTrackableProperty(p))
+                        .ToDictionary(p => p.Metadata.Name, p => p.OriginalValue);
+
+                    continue;
+                }
 
                 foreach (var property in entry.Properties)
                 {
                     string propertyName = property.Metadata.Name;
-                    if (propertyName == nameof(AuditableEntity.IsDeleted)
-                        || propertyName == nameof(AuditableEntity.CreationDate)
-                        || propertyName == nameof(AuditableEntity.ModificationDate)
-                        || propertyName == nameof(AuditableEntity.DeletionDate))
-                    {
+
+                    if (IsTrackableProperty(property))
                         continue;
-                    }
 
                     if (property.Metadata.IsPrimaryKey())
                     {
@@ -81,25 +95,32 @@ namespace Infrastructure.Data
                             auditEntry.OldValues[propertyName] = property.OriginalValue;
                             break;
                         case EntityState.Modified:
-                            if (property.IsModified)
+                            if (!property.IsModified)
+                                break;
+
+                            auditEntry.AuditType = AuditTypeEnum.Update;
+                            auditEntry.OldValues[propertyName] = property.OriginalValue;
+                            auditEntry.NewValues[propertyName] = property.CurrentValue;
+                            if (!Equals(property.OriginalValue, property.CurrentValue))
                             {
-                                if (property.OriginalValue != null
-                                    && !property.OriginalValue.Equals(property.CurrentValue))
-                                {
-                                    auditEntry.ChangedColumns.Add(propertyName);
-                                }
-                                auditEntry.AuditType = AuditTypeEnum.Update;
-                                auditEntry.OldValues[propertyName] = property.OriginalValue;
-                                auditEntry.NewValues[propertyName] = property.CurrentValue;
+                                auditEntry.ChangedColumns.Add(propertyName);
                             }
                             break;
                     }
                 }
             }
+
             foreach (var auditEntry in auditEntries)
             {
                 Audit.Add(auditEntry.ToAudit());
             }
         }
+
+        private static bool IsTrackableProperty(PropertyEntry property) =>
+            property.Metadata.Name is
+                nameof(AuditableEntity.CreationDate) or
+                nameof(AuditableEntity.ModificationDate) or
+                nameof(AuditableEntity.DeletionDate) or
+                nameof(AuditableEntity.IsDeleted);
     }
 }

@@ -10,9 +10,9 @@ namespace Infrastructure.Data
         public EntityEntry Entry { get; } = entry;
         public string? UserId { get; set; }
         public string? TableName { get; set; }
-        public Dictionary<string, object?> KeyValues { get; } = [];
-        public Dictionary<string, object?> OldValues { get; } = [];
-        public Dictionary<string, object?> NewValues { get; } = [];
+        public Dictionary<string, object?> KeyValues { get; set; } = [];
+        public Dictionary<string, object?> OldValues { get; set; } = [];
+        public Dictionary<string, object?> NewValues { get; set; } = [];
         public AuditTypeEnum AuditType { get; set; }
         public List<string> ChangedColumns { get; } = [];
 

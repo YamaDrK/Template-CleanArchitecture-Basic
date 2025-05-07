@@ -14,7 +14,7 @@ namespace WebAPI.Middlewares
             }
             catch (ValidationFailureException ex)
             {
-                await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ex.Errors);
+                await HandleExceptionAsync(context, HttpStatusCode.UnprocessableEntity, ex.Errors);
             }
             catch (DataNotFoundException ex)
             {
@@ -23,6 +23,10 @@ namespace WebAPI.Middlewares
             catch (DataConflictException ex)
             {
                 await HandleExceptionAsync(context, HttpStatusCode.Conflict, ex.Message);
+            }
+            catch (InvalidDataException ex)
+            {
+                await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

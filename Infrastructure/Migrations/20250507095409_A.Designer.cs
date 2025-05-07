@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250507085358_A")]
+    [Migration("20250507095409_A")]
     partial class A
     {
         /// <inheritdoc />
@@ -214,8 +214,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -231,7 +230,7 @@ namespace Infrastructure.Migrations
                             CreationDate = new DateTime(2004, 10, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "Admin@Admin.com",
                             IsDeleted = false,
-                            Password = "123",
+                            Password = "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy",
                             Role = 2
                         },
                         new
@@ -240,7 +239,7 @@ namespace Infrastructure.Migrations
                             CreationDate = new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "User1@User.com",
                             IsDeleted = false,
-                            Password = "123",
+                            Password = "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy",
                             Role = 1
                         },
                         new
@@ -249,7 +248,7 @@ namespace Infrastructure.Migrations
                             CreationDate = new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "User2@User.com",
                             IsDeleted = false,
-                            Password = "123",
+                            Password = "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy",
                             Role = 1
                         },
                         new
@@ -258,7 +257,7 @@ namespace Infrastructure.Migrations
                             CreationDate = new DateTime(2025, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "User3@User.com",
                             IsDeleted = false,
-                            Password = "123",
+                            Password = "$2a$12$4TyVGg5hnrJ13TQXxKj4WeFMePdYIDWQZ1SALrKYcW2UiUGBMLnyy",
                             Role = 1
                         });
                 });
