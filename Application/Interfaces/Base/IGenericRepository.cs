@@ -1,10 +1,11 @@
-﻿using Domain.EntityAbstractions;
+﻿using System.Linq.Expressions;
+using Domain.EntityAbstractions;
 
 namespace Application.Interfaces.Base
 {
     public interface IGenericRepository<T> where T : Entity
     {
-        Task<List<T>> GetAllAsync(string[]? includes = null);
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string[]? includes = null);
         Task<List<T>> GetAllWithDeletedAsync(string[]? includes = null);
         Task<T?> GetByIdAsync(int id, string[]? includes = null);
 

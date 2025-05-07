@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq.Expressions;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Domain.EntityAbstractions;
 using Infrastructure.Data;
@@ -15,7 +16,9 @@ namespace Infrastructure.Implements.Base
             ReferenceHandler = ReferenceHandler.Preserve
         };
 
-        public override async Task<List<T>> GetAllAsync(string[]? includes = null)
+        public override async Task<List<T>> GetAllAsync(
+            Expression<Func<T, bool>>? filter = null,
+            string[]? includes = null)
         {
             var entityCache = await _cache.GetStringAsync(CacheKey);
             if (entityCache != null)
@@ -23,7 +26,7 @@ namespace Infrastructure.Implements.Base
                 return JsonSerializer.Deserialize<List<T>>(entityCache, CachedJsonOptions) ?? [];
             }
 
-            var entities = await base.GetAllAsync(includes);
+            var entities = await base.GetAllAsync(filter, includes);
             await _cache.SetStringAsync(CacheKey, JsonSerializer.Serialize(entities, CachedJsonOptions));
             return entities;
         }

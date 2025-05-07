@@ -16,7 +16,7 @@ namespace Infrastructure.Implements.Base
 
         public virtual async Task<List<TGetDTO>> GetAllAsync()
         {
-            var entities = await _repository.GetAllAsync(includes);
+            var entities = await _repository.GetAllAsync(includes: includes);
             return _mapper.Map<List<TGetDTO>>(entities);
         }
 

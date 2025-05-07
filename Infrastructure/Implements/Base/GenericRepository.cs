@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Base;
+﻿using System.Linq.Expressions;
+using Application.Interfaces.Base;
 using Domain.EntityAbstractions;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,9 @@ namespace Infrastructure.Implements.Base
 {
     public class GenericRepository<T>(ApplicationDbContext _dbContext) : IGenericRepository<T> where T : Entity
     {
-        public virtual async Task<List<T>> GetAllAsync(string[]? includes = null)
+        public virtual async Task<List<T>> GetAllAsync(
+            Expression<Func<T, bool>>? filter = null,
+            string[]? includes = null)
         {
             IQueryable<T> query = _dbContext.Set<T>();
             if (includes != null)
@@ -16,6 +19,11 @@ namespace Infrastructure.Implements.Base
                 {
                     query = query.Include(include);
                 }
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
             }
 
             return typeof(AuditableEntity).IsAssignableFrom(typeof(T))
@@ -82,7 +90,7 @@ namespace Infrastructure.Implements.Base
                     entity.SetAuditableProperties();
                 }
             }
-            
+
             await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
