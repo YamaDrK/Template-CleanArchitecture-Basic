@@ -13,11 +13,12 @@ namespace Application.Commons.Mappers
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i => i.IsGenericType
-                    && (i.GetGenericTypeDefinition() == typeof(IMapFrom<>)
-                    || i.GetGenericTypeDefinition() == typeof(IMapTo<>))
+                .Where(t => t != typeof(MapFrom<>)
+                        && t != typeof(MapTo<>)
+                        && t.GetInterfaces().Any(i => i.IsGenericType
+                            && (i.GetGenericTypeDefinition() == typeof(IMapFrom<>)
+                            || i.GetGenericTypeDefinition() == typeof(IMapTo<>))
                 ))
-                .Where(t => t.Name != typeof(MapFrom<>).Name && t.Name != typeof(MapTo<>).Name)
                 .ToList();
 
             foreach (var type in types)

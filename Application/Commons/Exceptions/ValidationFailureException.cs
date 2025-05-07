@@ -11,10 +11,7 @@ namespace Application.Commons.Exceptions
 
         public ValidationFailureException(List<ValidationResult> errors) : this()
         {
-            foreach (var error in errors.Select(e => e.ErrorMessage ?? string.Empty))
-            {
-                Errors.Add(error);
-            }
+            Errors = errors.Select(e => e.ErrorMessage ?? string.Empty).ToList();
         }
     }
 }
