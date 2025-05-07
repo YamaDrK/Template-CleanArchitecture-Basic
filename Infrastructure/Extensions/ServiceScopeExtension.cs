@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
 {
-    public static class ServiceExtension
+    public static class ServiceScopeExtension
     {
         public static IServiceCollection AddServiceScoped(this IServiceCollection services)
         {

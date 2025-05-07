@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
 {
-    public static class RepositoryExtension
+    public static class RepositoryScopeExtension
     {
         public static IServiceCollection AddRepositoryScoped(this IServiceCollection services)
         {
