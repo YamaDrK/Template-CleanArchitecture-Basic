@@ -7,7 +7,7 @@ namespace Domain.EntityAnnotations
     {
         public MessageRequiredAttribute() : base()
         {
-            ErrorMessage = $"{0} is required";
+            ErrorMessage = "{0} is required";
         }
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
