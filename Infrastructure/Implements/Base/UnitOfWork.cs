@@ -1,11 +1,15 @@
 ﻿using Application.Interfaces.Base;
+using Application.Interfaces.Services;
 using Domain.EntityAbstractions;
 using Infrastructure.Data;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace Infrastructure.Implements.Base
 {
-    public class UnitOfWork(ApplicationDbContext dbContext, IDistributedCache cache) : IUnitOfWork
+    public class UnitOfWork(ApplicationDbContext dbContext,
+        IDistributedCache cache,
+        ICurrentUserService currentUserService)
+            : IUnitOfWork
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
         private readonly IDistributedCache _cache = cache;
@@ -33,7 +37,9 @@ namespace Infrastructure.Implements.Base
 
         public async Task<int> SaveChangeAsync()
         {
-            return await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync(currentUserService.UserId != 0
+                ? currentUserService.UserId.ToString()
+                : null);
         }
     }
 }

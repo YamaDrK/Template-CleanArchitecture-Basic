@@ -7,6 +7,7 @@ namespace WebAPI.Extensions
     {
         public static IServiceCollection AddDefaultAPIServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllers().AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
