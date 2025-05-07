@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Domain.EntityAbstractions;
 using Infrastructure.Data;
 using Microsoft.Extensions.Caching.Distributed;
@@ -6,20 +7,24 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace Infrastructure.Implements.Base
 {
     public class CachedRepository<T>(ApplicationDbContext _dbContext, IDistributedCache _cache)
-            : GenericRepository<T>(_dbContext) where T : Entity
+               : GenericRepository<T>(_dbContext) where T : Entity
     {
         private readonly string CacheKey = $"{typeof(T).Name}Cache";
+        private readonly JsonSerializerOptions CachedJsonOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         public override async Task<List<T>> GetAllAsync(string[]? includes = null)
         {
             var entityCache = await _cache.GetStringAsync(CacheKey);
             if (entityCache != null)
             {
-                return JsonSerializer.Deserialize<List<T>>(entityCache) ?? [];
+                return JsonSerializer.Deserialize<List<T>>(entityCache, CachedJsonOptions) ?? [];
             }
 
             var entities = await base.GetAllAsync(includes);
-            await _cache.SetStringAsync(CacheKey, JsonSerializer.Serialize(entities));
+            await _cache.SetStringAsync(CacheKey, JsonSerializer.Serialize(entities, CachedJsonOptions));
             return entities;
         }
 

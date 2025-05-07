@@ -12,22 +12,24 @@ namespace Infrastructure.Implements.Base
                 where TModel : BaseEntity
                 where TGetDTO : class
     {
+        protected readonly IGenericRepository<TModel> _repository = _unitOfWork.Repository<TModel>(isCached);
+
         public virtual async Task<List<TGetDTO>> GetAllAsync()
         {
-            var entities = await _unitOfWork.Repository<TModel>(isCached).GetAllAsync(includes);
+            var entities = await _repository.GetAllAsync(includes);
             return _mapper.Map<List<TGetDTO>>(entities);
         }
 
         public virtual async Task<List<TGetDTO>> GetAllWithDeletedAsync()
         {
-            var entities = await _unitOfWork.Repository<TModel>(isCached).GetAllWithDeletedAsync(includes);
+            var entities = await _repository.GetAllWithDeletedAsync(includes);
             return _mapper.Map<List<TGetDTO>>(entities);
         }
 
         public virtual async Task<TGetDTO?> GetByIdAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<TModel>().GetByIdAsync(id, includes);
-            return entity != null ? _mapper.Map<TModel, TGetDTO>(entity) : null;
+            var entity = await _repository.GetByIdAsync(id, includes);
+            return entity != null ? _mapper.Map<TGetDTO>(entity) : null;
         }
     }
 }

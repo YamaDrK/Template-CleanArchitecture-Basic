@@ -53,7 +53,13 @@ namespace Infrastructure.Implements.Base
                 }
             }
 
-            return await query.FirstOrDefaultAsync(entity => (entity as BaseEntity)!.Id == id);
+            var entity = await query.FirstOrDefaultAsync(entity => (entity as BaseEntity)!.Id == id);
+            if (entity is AuditableEntity auditEntity && auditEntity.IsDeleted)
+            {
+                return null;
+            }
+
+            return entity;
         }
 
         public virtual async Task<T> AddAsync(T entity)
