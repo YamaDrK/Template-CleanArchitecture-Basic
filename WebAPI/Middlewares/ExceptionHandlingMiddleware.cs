@@ -35,7 +35,7 @@ namespace WebAPI.Middlewares
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, dynamic message)
+        private static Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, dynamic message)
         {
             context.Response.StatusCode = (int)statusCode;
             context.Response.ContentType = "application/json";
