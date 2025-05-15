@@ -55,5 +55,25 @@ namespace Application.Utils
                 return null;
             }
         }
+
+        public static async Task<bool> DeleteImageAsync(AppConfiguration configuration, Type entityType, string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                return false;
+
+            using var dropbox = new DropboxClient(configuration.DropboxConfig.AccessToken,
+                new DropboxClientConfig(configuration.DropboxConfig.AppName));
+
+            var pathToDelete = $"/{entityType.Name}/{fileName}";
+            try
+            {
+                await dropbox.Files.DeleteV2Async(pathToDelete);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }
