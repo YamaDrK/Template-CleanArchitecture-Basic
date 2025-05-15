@@ -6,6 +6,7 @@
         public JwtConfig JwtConfig { get; set; } = null!;
         public EmailConfig EmailConfig { get; set; } = null!;
         public RedisConfig RedisConfig { get; set; } = null!;
+        public DropboxConfig DropboxConfig { get; set; } = null!;
     }
 
     #region DatabaseConfig
@@ -39,6 +40,14 @@
     {
         public string ConnectionString { get; set; } = string.Empty;
         public string InstanceName { get; set; } = string.Empty;
+    }
+    #endregion
+
+    #region DropboxConfig
+    public class DropboxConfig
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string AppName { get; set; } = string.Empty;
     }
     #endregion
 }

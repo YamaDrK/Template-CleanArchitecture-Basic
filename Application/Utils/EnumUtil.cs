@@ -1,6 +1,6 @@
 ﻿namespace Application.Utils
 {
-    public class EnumUtil
+    public static class EnumUtil
     {
         public static T GetEnumFromString<T>(string value) where T : struct, Enum
         {

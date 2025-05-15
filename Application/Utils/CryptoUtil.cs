@@ -1,6 +1,6 @@
 ﻿namespace Application.Utils
 {
-    public class CryptoUtil
+    public static class CryptoUtil
     {
         public static string EncryptPassword(string? password)
         {
