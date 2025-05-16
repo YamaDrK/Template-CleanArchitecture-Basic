@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetImage(string name)
         {
             var image = await ImageUtil.GetImageAsync(_configuration, typeof(Test), name);
-            return File(image, "image/jpeg");
+            return Ok(image);
         }
 
         [HttpDelete("delete-image")]

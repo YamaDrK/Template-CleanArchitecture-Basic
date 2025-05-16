@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Application.Commons;
-using Dropbox.Api;
-using Dropbox.Api.Files;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Utils
@@ -13,47 +13,35 @@ namespace Application.Utils
             if (file == null || file.Length == 0)
                 return null;
 
-            using var dropbox = new DropboxClient(configuration.DropboxConfig.AccessToken,
-                new DropboxClientConfig(configuration.DropboxConfig.AppName));
+            Cloudinary cloudinary = new(configuration.CloudinaryConfig.GetCloudinaryURL());
+            cloudinary.Api.Secure = true;
 
-            var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}_{file.FileName}";
-            var pathToSave = $"/{entityType.Name}/{fileName}";
-
+            var fileName = $"{Guid.NewGuid():N}_{file.FileName}";
             using var stream = file.OpenReadStream();
-            try
+            var uploadParams = new ImageUploadParams()
             {
-                await dropbox.Files.UploadAsync(
-                   pathToSave,
-                   WriteMode.Overwrite.Instance,
-                   body: stream);
-
-                return fileName;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+                Folder = entityType.Name,
+                File = new FileDescription(fileName, stream),
+                UseFilename = true,
+                UniqueFilename = false,
+                Overwrite = true,
+            };
+            var result = await cloudinary.UploadAsync(uploadParams);
+            return result.Error == null ? fileName : null;
         }
 
-        public static async Task<byte[]?> GetImageAsync(AppConfiguration configuration, Type entityType, string fileName)
+        public static async Task<string?> GetImageAsync(AppConfiguration configuration, Type entityType, string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
                 return null;
 
-            using var dropbox = new DropboxClient(configuration.DropboxConfig.AccessToken,
-                new DropboxClientConfig(configuration.DropboxConfig.AppName));
+            Cloudinary cloudinary = new(configuration.CloudinaryConfig.GetCloudinaryURL());
+            cloudinary.Api.Secure = true;
 
-            var pathToRead = $"/{entityType.Name}/{fileName}";
-            try
-            {
-                var response = await dropbox.Files.DownloadAsync(pathToRead);
-                var bytes = response?.GetContentAsByteArrayAsync();
-                return bytes?.Result;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            var path = $"{entityType.Name}/{fileName}";
+            var result = await cloudinary.GetResourceAsync(new GetResourceParams(path));
+
+            return result.Url;
         }
 
         public static async Task<bool> DeleteImageAsync(AppConfiguration configuration, Type entityType, string fileName)
@@ -61,19 +49,13 @@ namespace Application.Utils
             if (string.IsNullOrEmpty(fileName))
                 return false;
 
-            using var dropbox = new DropboxClient(configuration.DropboxConfig.AccessToken,
-                new DropboxClientConfig(configuration.DropboxConfig.AppName));
+            Cloudinary cloudinary = new(configuration.CloudinaryConfig.GetCloudinaryURL());
+            cloudinary.Api.Secure = true;
 
-            var pathToDelete = $"/{entityType.Name}/{fileName}";
-            try
-            {
-                await dropbox.Files.DeleteV2Async(pathToDelete);
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            var path = $"{entityType.Name}/{fileName}";
+            var result = await cloudinary.DeleteResourcesAsync(path);
+
+            return result.Error == null;
         }
     }
 }

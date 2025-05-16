@@ -6,7 +6,7 @@
         public JwtConfig JwtConfig { get; set; } = null!;
         public EmailConfig EmailConfig { get; set; } = null!;
         public RedisConfig RedisConfig { get; set; } = null!;
-        public DropboxConfig DropboxConfig { get; set; } = null!;
+        public CloudinaryConfig CloudinaryConfig { get; set; } = null!;
     }
 
     #region DatabaseConfig
@@ -43,11 +43,14 @@
     }
     #endregion
 
-    #region DropboxConfig
-    public class DropboxConfig
+    #region CloudinaryConfig
+    public class CloudinaryConfig
     {
-        public string AccessToken { get; set; } = string.Empty;
-        public string AppName { get; set; } = string.Empty;
+        public string CloudName { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
+        public string ApiSecret { get; set; } = string.Empty;
+
+        public string GetCloudinaryURL() => $"cloudinary://{ApiKey}:{ApiSecret}@{CloudName}";
     }
     #endregion
 }
